@@ -18,11 +18,11 @@ pipeline {
 				}
 			}
 			steps {
-				sh 'py.test --verbose --junit-xml test-reports/resutls.xml sources/calc.py'
+				sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
 			}
 			post {
 				always {
-					junit 'test-reports/resutls.xml'
+					junit 'test-reports/results.xml'
 				}
 			}
 		}
