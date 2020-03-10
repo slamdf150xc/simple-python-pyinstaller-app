@@ -1,16 +1,30 @@
 pipeline {
-  agent none
-    stages {
-      stage('Build') {
-        agent {
-          docker {
-            image 'python:2-alpine'
-          }
-        }
-        steps {
-          sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-        }
-    }
-  }
+	agent none
+	stages {
+		stage('Build') {
+			agent {
+				docker {
+					image 'python:2-alpine'
+				}
+			}
+			steps {
+				sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+			}
+		}
+		stage('Test') {
+			agent {
+				docker {
+					image 'qnig/pytest'
+				}
+			}
+			steps {
+				sh 'py.test --verbose --junit-xml test-reports/resutls.xml sources/calc.py'
+			}
+			post {
+				always {
+					junit 'test-reports/resutls.xml'
+				}
+			}
+		}
+	}
 }
-				
